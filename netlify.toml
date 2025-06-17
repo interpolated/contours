@@ -3,4 +3,5 @@
   publish = "dist"
 
 [environment]
-  NODE_VERSION = "22.16.0"
+  NODE_VERSION = "18.19.0" # or 20.11.1 — just make sure it's Node 18+ but with npm 9
+  NPM_VERSION = "9.8.1"

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview</title>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { margin: 0; }
+        #root { width: 100%; height: 100vh; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        let currentScript = null;
+
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'CODE_UPDATE') {
+                try {
+                    // Remove previous script if it exists
+                    if (currentScript) {
+                        document.body.removeChild(currentScript);
+                    }
+
+                    // Clear the root element
+                    const root = document.getElementById('root');
+                    root.innerHTML = '';
+
+                    // Transform the code using Babel
+                    const transformedCode = Babel.transform(event.data.code, {
+                        presets: ['react'],
+                        filename: 'app.jsx'
+                    }).code;
+
+                    // Create and append the new script
+                    currentScript = document.createElement('script');
+                    currentScript.type = 'text/javascript';
+                    currentScript.textContent = `
+                        try {
+                            ${transformedCode}
+                            ReactDOM.render(React.createElement(App), document.getElementById('root'));
+                        } catch (error) {
+                            console.error('Preview render error:', error);
+                        }
+                    `;
+                    document.body.appendChild(currentScript);
+                } catch (error) {
+                    console.error('Code transformation error:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

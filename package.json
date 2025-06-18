@@ -14,8 +14,8 @@
     "@gi-nx/iframe-sdk-react": "latest",
     "@turf/turf": "latest",
     "proj4": "^2.15.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "recharts": "latest",
     "three": "^0.154.0",
     "three-stdlib": "^2.35.16"
